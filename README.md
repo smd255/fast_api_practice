@@ -2,7 +2,7 @@
 FastAPI 練習  
 
 ##コマンド
-カレントディレクトリをsrcにする。  
+カレントディレクトリを実行対象のソース直下にする。  
 
 ・実行  
 uvicorn main:app --reload  
