@@ -24,7 +24,7 @@ async def init_db():
         await conn.run_sync(Base.metadata.drop_all)
         print(">>> 既存のテーブルを削除しました。")
         # テーブルを作成
-        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
 
 # スクリプトで実行時のみ実行
 if __name__ == "__main__":

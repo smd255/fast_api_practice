@@ -59,9 +59,7 @@ async def remove_memo(memo_id: int,
     # 指定されたIDのメモをデータベースから削除
     result = await memo_crud.delete_memo(db, memo_id)
     if not result:
-        # 指定されたIDのメモをデータベースから削除
-        result = await memo_crud.delete_memo(db, memo_id)
-        if not result:
-            # 削除対象が見つからない場合、HTTP 404エラーを返す
-            raise HTTPException(status_code=404, detail="削除対象が見つかりません")
-        return ResponseSchema(message="メモが正常に削除されました")
+        # 削除対象が見つからない場合、HTTP 404エラーを返す
+        raise HTTPException(status_code=404, detail="削除対象が見つかりません")
+    
+    return ResponseSchema(message="メモが正常に削除されました")

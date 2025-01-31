@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-import schemas.memo as memo_shema
+import schemas.memo as memo_schema
 import models.memo as memo_model
 from datetime import datetime
 
@@ -10,7 +10,7 @@ from datetime import datetime
 # 新規登録
 async def insert_memo(
         db_session: AsyncSession,
-        memo_data: memo_shema.InsertAndUpdateMemoSchema) -> memo_model.Memo:
+        memo_data: memo_schema.InsertAndUpdateMemoSchema) -> memo_model.Memo:
     """
         新しいデータをデータベースに登録する関数
         Args:
@@ -38,7 +38,7 @@ async def get_memos(db_session: AsyncSession) -> list[memo_model.Memo]:
     """
     print("=== 全件取得：開始 ===")
     result = await db_session.execute(select(memo_model.Memo))  #全メモ選択
-    memos = result.scalars.all()    #全結果をリストとして格納
+    memos = result.scalars().all()    #全結果をリストとして格納
     print(">>> データ全件取得完了")
     return memos
 
@@ -65,7 +65,7 @@ async def get_memo_by_id(db_session: AsyncSession,
 async def update_memo(
         db_session:AsyncSession,
         memo_id: int,
-        target_data: memo_shema.InsertAndUpdateMemoSchema) -> memo_model.Mmeo | None:
+        target_data: memo_schema.InsertAndUpdateMemoSchema) -> memo_model.Memo | None:
     """
         データベースのメモを更新する関数
         Args:
