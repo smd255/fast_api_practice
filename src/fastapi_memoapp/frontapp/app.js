@@ -8,7 +8,7 @@ let editingMemoId = null;
  * メッセージをアラートダイアログで表示する関数
  */
 function displayMessage(message){
-    alert(message)
+    alert(message);
 }
 
 /**
@@ -21,9 +21,11 @@ function resetForm(){
     // 項目：タイトルをリセット
     document.getElementById('title').value = '';
     // 項目：詳細をリセット
-    document.getElementById('description').style.display = 'none';
+    document.getElementById('description').value = '';
+    // 更新実行ボタンを非表示にする
+    document.getElementById('updateButton').style.display = 'none';
     // 新規登録ボタンを再表示
-    document.querySelector('#createMemoForm button[submit]').style.display = 'block';
+    document.querySelector('#createMemoForm button[type="submit"]').style.display = 'block';
     // 編集中のメモIDをリセット
     editingMemoId =null;
 }
@@ -77,7 +79,7 @@ async function updateMemo(memo){
         // headersに'Content-Type'を'application/json'に設定。
         // JSON形式のデータを送信
         const response = await fetch(`${apiUrl}${editingMemoId}`, {
-            method: `PUT`,
+            method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(memo)
         });
@@ -114,7 +116,7 @@ async function deleteMemo(memoId){
         // APIに「DELETEリクエスト」を送信してメモを削除します。
         const response = await fetch(`${apiUrl}${memoId}`,{
             method: 'DELETE'
-        })
+        });
         // レスポンスのボディをJSONとして解析
         const data = await response.json();
         // レスポンスが成功した場合(HTTPステータスコード：200)
@@ -156,7 +158,7 @@ async function fetchAndDisplayMemos(){
             // 行を作成
             const row = document.createElement('tr');
             // 行の中身：タイトル、説明、編集と削除ボタン
-            row.innnerHTML = `
+            row.innerHTML = `
                 <td>${memo.title}</td>
                 <td>${memo.description}</td>
                 <td>
@@ -224,6 +226,15 @@ document.addEventListener('DOMContentLoaded', () =>{
         } else {
             await createMemo(memo);
         }
+    };
+
+    // 更新ボタンのクリックイベントに対する処理を設定
+    document.getElementById('updateButton').onclick = async () => {
+        // タイトルと説明の入力値を取得
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        // 更新関数を実行
+        await updateMemo({ title, description });
     };
 
     // メモ一覧テーブル内のクリックイベントを監視
